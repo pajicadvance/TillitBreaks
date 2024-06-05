@@ -1,31 +1,41 @@
 package schauweg.tillitbreaks.mixin;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.entry.RegistryEntry;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import schauweg.tillitbreaks.config.TIBConfig;
 import schauweg.tillitbreaks.config.TIBConfigManager;
 
-import java.util.Map;
+@Mixin(DrawContext.class)
+public class DrawContextMixin {
 
-@Mixin(ItemRenderer.class)
-public abstract class ItemRendererMixin {
+    @Shadow @Final private MatrixStack matrices;
 
-    @Inject(method = "renderGuiItemOverlay(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At("TAIL"))
-    public void onRenderGuiItemOverlay(MatrixStack matrices, TextRenderer renderer, ItemStack stack, int x, int y, String countLabel, CallbackInfo ci) {
+    @Shadow @Final private MinecraftClient client;
+
+    @Shadow @Final private VertexConsumerProvider.Immediate vertexConsumers;
+
+    @Inject(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At("TAIL"))
+    public void onDrawItemInSlot(TextRenderer textRenderer, ItemStack stack, int x, int y, String countOverride, CallbackInfo ci) {
 
         TIBConfig config = TIBConfigManager.getConfig();
 
@@ -42,15 +52,15 @@ public abstract class ItemRendererMixin {
             matrixTextInfo.multiplyPositionMatrix(matrices.peek().getPositionMatrix());
             matrixTextInfo.translate(x, y, 300.0F);
             matrixTextInfo.scale(scale, scale, 0F);
-            int fontHeight = renderer.fontHeight;
+            int fontHeight = client.textRenderer.fontHeight;
 
             if (config.isShowDurabilityNumber()) {
                 if (config.isShowDurabilityNumIfFull() && !stack.isDamaged() || stack.isDamaged()) {
                     String curDur = String.valueOf(stack.getMaxDamage() - stack.getDamage());
-                    int textWidth = renderer.getWidth(curDur);
+                    int textWidth = client.textRenderer.getWidth(curDur);
                     float barOffset = config.isShowDurabilityBar() ? 2.5F / scale : 0;
 
-                    renderer.draw(matrixTextInfo, curDur, 16 / scale - textWidth + (scale * 0.33F), 16 / scale - fontHeight - barOffset + scale, config.isColorDurabilityNumber() ? stack.getItemBarColor() : -1);
+                    client.textRenderer.draw(curDur, 16 / scale - textWidth + (scale * 0.33F), 16 / scale - fontHeight - barOffset + scale, config.isColorDurabilityNumber() ? stack.getItemBarColor() : -1, false, matrixTextInfo.peek().getPositionMatrix(), vertexConsumers, TextRenderer.TextLayerType.SEE_THROUGH, 0, 0);
                 }
             }
 
@@ -69,20 +79,19 @@ public abstract class ItemRendererMixin {
                 String totalArrows = String.valueOf(arrowCounter);
 
                 if (stack.hasEnchantments() && arrowCounter > 0) {
-                    Map<Enchantment, Integer> map = EnchantmentHelper.get(stack);
-                    for (Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
-                        Enchantment enchantment = entry.getKey();
+                    ItemEnchantmentsComponent itemEnchantmentsComponent = EnchantmentHelper.getEnchantments(stack);
+                    for (Object2IntMap.Entry<RegistryEntry<Enchantment>> entry : itemEnchantmentsComponent.getEnchantmentsMap().stream().toList()) {
+                        Enchantment enchantment = entry.getKey().value();
                         if (enchantment.equals(Enchantments.INFINITY) && hasNormalArrows) {
                             totalArrows = "∞";
                             break;
                         }
                     }
                 }
-                int textWidth = renderer.getWidth(totalArrows);
-                renderer.draw(matrixTextInfo, totalArrows, 16 / scale - textWidth + (scale * 0.33F), 0.5F / scale, -1);
+                int textWidth = client.textRenderer.getWidth(totalArrows);
+                client.textRenderer.draw(totalArrows, 16 / scale - textWidth + (scale * 0.33F), 0.5F / scale, -1, false, matrixTextInfo.peek().getPositionMatrix(), vertexConsumers, TextRenderer.TextLayerType.SEE_THROUGH, 0, 0);
             }
             matrixTextInfo.push();
         }
     }
 }
-
