@@ -55,6 +55,13 @@ public class TIBConfigScreen {
                 .build()
         );
 
+        general.addEntry(entryBuilder.startBooleanToggle(Text.translatable(Main.MOD_ID + ".config.option.colordurabilitywhiteiffull"), config.isColorDurabilityNumWhiteIfFull())
+                .setSaveConsumer(newValue -> config.setColorDurabilityNumWhiteIfFull(newValue))
+                .setDefaultValue(true)
+                .setYesNoTextSupplier(getYesNoSupplier("tillitbreaks.config.enabled", "tillitbreaks.config.disabled"))
+                .build()
+        );
+
         general.addEntry(entryBuilder.startBooleanToggle(Text.translatable(Main.MOD_ID + ".config.option.showarrowcount"), config.isShowArrowCount())
                 .setSaveConsumer(newValue -> config.setShowArrowCount(newValue))
                 .setDefaultValue(true)

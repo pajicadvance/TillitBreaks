@@ -6,6 +6,7 @@
   "tillitbreaks.config.option.showbar": "Enable or disable the durability bar",
   "tillitbreaks.config.option.showdurablilitynumber": "Enable or disable the durability number",
   "tillitbreaks.config.option.colordurability": "Color the durability number depending on damage",
+  "tillitbreaks.config.option.colordurabilitywhiteiffull": "Color the durability number white if durability is full",
   "tillitbreaks.config.option.showarrowcount": "Enable or disable the arrow counter",
   "tillitbreaks.config.option.textsize": "Text size in percentage",
   "tillitbreaks.config.enabled": "Enabled",

@@ -7,6 +7,7 @@ public class TIBConfig {
     private boolean showDurabilityBar = true;
     private boolean showDurabilityNumber = true;
     private boolean colorDurabilityNumber = false;
+    private boolean colorDurabilityNumWhiteIfFull = false;
     private boolean showArrowCount = true;
     private int textSize = 100;
 
@@ -48,6 +49,14 @@ public class TIBConfig {
 
     public void setColorDurabilityNumber(boolean colorDurabilityNumber) {
         this.colorDurabilityNumber = colorDurabilityNumber;
+    }
+
+    public boolean isColorDurabilityNumWhiteIfFull() {
+        return colorDurabilityNumWhiteIfFull;
+    }
+
+    public void setColorDurabilityNumWhiteIfFull(boolean colorDurabilityNumWhiteIfFull) {
+        this.colorDurabilityNumWhiteIfFull = colorDurabilityNumWhiteIfFull;
     }
 
     public boolean isShowArrowCount() {

@@ -61,7 +61,12 @@ public class DrawContextMixin {
                     int textWidth = client.textRenderer.getWidth(curDur);
                     float barOffset = config.isShowDurabilityBar() ? 2.5F / scale : 0;
 
-                    client.textRenderer.draw(curDur, 16 / scale - textWidth + (scale * 0.33F), 16 / scale - fontHeight - barOffset + scale, config.isColorDurabilityNumber() ? stack.getItemBarColor() : -1, false, matrixTextInfo.peek().getPositionMatrix(), vertexConsumers, TextRenderer.TextLayerType.SEE_THROUGH, 0, 0);
+                    int color = -1;
+                    if (config.isColorDurabilityNumber() && !(config.isColorDurabilityNumWhiteIfFull() && !stack.isDamaged())) {
+                        color = stack.getItemBarColor();
+                    }
+
+                    client.textRenderer.draw(curDur, 16 / scale - textWidth + (scale * 0.33F), 16 / scale - fontHeight - barOffset + scale, color, false, matrixTextInfo.peek().getPositionMatrix(), vertexConsumers, TextRenderer.TextLayerType.SEE_THROUGH, 0, 0);
                 }
             }
 
