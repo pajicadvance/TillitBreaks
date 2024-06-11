@@ -83,13 +83,13 @@ public class DrawContextMixin {
                     ItemEnchantmentsComponent itemEnchantmentsComponent = EnchantmentHelper.getEnchantments(stack);
                     for (Object2IntMap.Entry<RegistryEntry<Enchantment>> entry : itemEnchantmentsComponent.getEnchantmentsMap().stream().toList()) {
                         Enchantment enchantment = entry.getKey().value();
-                        if (enchantment.equals(Enchantments.INFINITY) && hasNormalArrows) {
+                        if (enchantment.equals(Enchantments.INFINITY)) {
                             boolean isBowInfinityFixLoaded = FabricLoader.getInstance().isModLoaded("bowinfinityfix");
                             if (isBowInfinityFixLoaded) {
                                 totalArrows = "∞";
                                 break;
                             }
-                            else if (arrowCounter > 0) {
+                            else if (arrowCounter > 0 && hasNormalArrows) {
                                 totalArrows = "∞";
                                 break;
                             }
