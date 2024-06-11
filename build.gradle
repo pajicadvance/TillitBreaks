@@ -25,6 +25,17 @@ repositories {
         name = 'TerraformersMC'
         url = 'https://maven.terraformersmc.com/releases'
     }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 dependencies {
@@ -45,6 +56,9 @@ dependencies {
     modImplementation("com.terraformersmc:modmenu:${project.modmenu}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
+
+    modCompileOnly("maven.modrinth:bow-infinity-fix:3.0.0-fabric")
+    modLocalRuntime("maven.modrinth:bow-infinity-fix:3.0.0-fabric")
 }
 
 processResources {

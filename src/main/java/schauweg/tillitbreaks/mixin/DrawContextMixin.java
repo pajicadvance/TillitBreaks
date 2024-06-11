@@ -1,6 +1,7 @@
 package schauweg.tillitbreaks.mixin;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -78,13 +79,20 @@ public class DrawContextMixin {
                 }
                 String totalArrows = String.valueOf(arrowCounter);
 
-                if (stack.hasEnchantments() && arrowCounter > 0) {
+                if (stack.hasEnchantments()) {
                     ItemEnchantmentsComponent itemEnchantmentsComponent = EnchantmentHelper.getEnchantments(stack);
                     for (Object2IntMap.Entry<RegistryEntry<Enchantment>> entry : itemEnchantmentsComponent.getEnchantmentsMap().stream().toList()) {
                         Enchantment enchantment = entry.getKey().value();
                         if (enchantment.equals(Enchantments.INFINITY) && hasNormalArrows) {
-                            totalArrows = "∞";
-                            break;
+                            boolean isBowInfinityFixLoaded = FabricLoader.getInstance().isModLoaded("bowinfinityfix");
+                            if (isBowInfinityFixLoaded) {
+                                totalArrows = "∞";
+                                break;
+                            }
+                            else if (arrowCounter > 0) {
+                                totalArrows = "∞";
+                                break;
+                            }
                         }
                     }
                 }
