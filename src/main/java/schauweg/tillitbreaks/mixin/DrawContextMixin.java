@@ -1,6 +1,5 @@
 package schauweg.tillitbreaks.mixin;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -9,14 +8,12 @@ import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.RegistryKeys;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -84,21 +81,13 @@ public class DrawContextMixin {
                 }
                 String totalArrows = String.valueOf(arrowCounter);
 
-                if (stack.hasEnchantments()) {
-                    ItemEnchantmentsComponent itemEnchantmentsComponent = EnchantmentHelper.getEnchantments(stack);
-                    for (Object2IntMap.Entry<RegistryEntry<Enchantment>> entry : itemEnchantmentsComponent.getEnchantmentsMap().stream().toList()) {
-                        Enchantment enchantment = entry.getKey().value();
-                        if (enchantment.equals(Enchantments.INFINITY)) {
-                            boolean isBowInfinityFixLoaded = FabricLoader.getInstance().isModLoaded("bowinfinityfix");
-                            if (isBowInfinityFixLoaded) {
-                                totalArrows = "∞";
-                                break;
-                            }
-                            else if (arrowCounter > 0 && hasNormalArrows) {
-                                totalArrows = "∞";
-                                break;
-                            }
-                        }
+                if (EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(Enchantments.INFINITY), stack) > 0) {
+                    boolean isBowInfinityFixLoaded = FabricLoader.getInstance().isModLoaded("bowinfinityfix");
+                    if (isBowInfinityFixLoaded) {
+                        totalArrows = "∞";
+                    }
+                    else if (arrowCounter > 0 && hasNormalArrows) {
+                        totalArrows = "∞";
                     }
                 }
                 int textWidth = client.textRenderer.getWidth(totalArrows);
