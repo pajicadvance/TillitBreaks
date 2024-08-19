@@ -71,23 +71,41 @@ public class DrawContextMixin {
 
                 PlayerInventory inventory = player.getInventory();
                 int arrowCounter = 0;
+                int specialArrowCounter = 0;
                 boolean hasNormalArrows = false;
                 for (int i = 0; i < inventory.size(); i++) {
                     ItemStack is = inventory.getStack(i);
                     if (is.getItem() == Items.ARROW || is.getItem() == Items.SPECTRAL_ARROW || is.getItem() == Items.TIPPED_ARROW) {
                         arrowCounter += is.getCount();
                         if (is.getItem() == Items.ARROW) hasNormalArrows = true;
+                        else specialArrowCounter += is.getCount();
                     }
                 }
                 String totalArrows = String.valueOf(arrowCounter);
 
                 if (EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(Enchantments.INFINITY), stack) > 0) {
                     boolean isBowInfinityFixLoaded = FabricLoader.getInstance().isModLoaded("bowinfinityfix");
-                    if (isBowInfinityFixLoaded) {
-                        totalArrows = "∞";
+                    boolean isInfinitiesLoaded = FabricLoader.getInstance().isModLoaded("infinities");
+                    if (isBowInfinityFixLoaded || isInfinitiesLoaded) {
+                        if (arrowCounter == 0) {
+                            totalArrows = "∞";
+                        }
+                        else if (arrowCounter > 0) {
+                            if (specialArrowCounter > 0) {
+                                totalArrows = "∞+" + specialArrowCounter;
+                            }
+                            else {
+                                totalArrows = "∞";
+                            }
+                        }
                     }
                     else if (arrowCounter > 0 && hasNormalArrows) {
-                        totalArrows = "∞";
+                        if (specialArrowCounter > 0) {
+                            totalArrows = "∞+" + specialArrowCounter;
+                        }
+                        else {
+                            totalArrows = "∞";
+                        }
                     }
                 }
                 int textWidth = client.textRenderer.getWidth(totalArrows);
