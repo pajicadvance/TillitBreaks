@@ -11,6 +11,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.BowItem;
+import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKeys;
@@ -67,7 +69,7 @@ public class DrawContextMixin {
                 }
             }
 
-            if (config.isShowArrowCount() && (stack.getItem() == Items.BOW || stack.getItem() == Items.CROSSBOW)) {
+            if (config.isShowArrowCount() && (stack.getItem() instanceof BowItem || stack.getItem() instanceof CrossbowItem)) {
 
                 PlayerInventory inventory = player.getInventory();
                 int arrowCounter = 0;
@@ -86,7 +88,8 @@ public class DrawContextMixin {
                 if (EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(Enchantments.INFINITY), stack) > 0) {
                     boolean isBowInfinityFixLoaded = FabricLoader.getInstance().isModLoaded("bowinfinityfix");
                     boolean isInfinitiesLoaded = FabricLoader.getInstance().isModLoaded("infinities");
-                    if (isBowInfinityFixLoaded || isInfinitiesLoaded) {
+                    boolean isRangerLoaded = FabricLoader.getInstance().isModLoaded("ranger");
+                    if (isBowInfinityFixLoaded || isInfinitiesLoaded || isRangerLoaded) {
                         if (arrowCounter == 0) {
                             totalArrows = "∞";
                         }
