@@ -34,7 +34,7 @@ public class DrawContextMixin {
 
     @Shadow @Final private VertexConsumerProvider.Immediate vertexConsumers;
 
-    @Inject(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At("TAIL"))
+    @Inject(method = "drawStackOverlay(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At("TAIL"))
     public void onDrawItemInSlot(TextRenderer textRenderer, ItemStack stack, int x, int y, String countOverride, CallbackInfo ci) {
 
         TIBConfig config = TIBConfigManager.getConfig();
@@ -85,7 +85,7 @@ public class DrawContextMixin {
                 }
                 String totalArrows = String.valueOf(arrowCounter);
 
-                if (EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(Enchantments.INFINITY), stack) > 0) {
+                if (EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.INFINITY), stack) > 0) {
                     boolean isBowInfinityFixLoaded = FabricLoader.getInstance().isModLoaded("bowinfinityfix");
                     boolean isInfinitiesLoaded = FabricLoader.getInstance().isModLoaded("infinities");
                     boolean isReArmLoaded = FabricLoader.getInstance().isModLoaded("rearm");
