@@ -88,8 +88,8 @@ public class DrawContextMixin {
                 if (EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).entryOf(Enchantments.INFINITY), stack) > 0) {
                     boolean isBowInfinityFixLoaded = FabricLoader.getInstance().isModLoaded("bowinfinityfix");
                     boolean isInfinitiesLoaded = FabricLoader.getInstance().isModLoaded("infinities");
-                    boolean isRangerLoaded = FabricLoader.getInstance().isModLoaded("ranger");
-                    if (isBowInfinityFixLoaded || isInfinitiesLoaded || isRangerLoaded) {
+                    boolean isReArmLoaded = FabricLoader.getInstance().isModLoaded("rearm");
+                    if (isBowInfinityFixLoaded || isInfinitiesLoaded || isReArmLoaded) {
                         if (arrowCounter == 0) {
                             totalArrows = "∞";
                         }
