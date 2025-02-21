@@ -16,23 +16,30 @@ import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.text.Text;
+import org.apache.commons.lang3.tuple.Triple;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import schauweg.tillitbreaks.compat.NyfsQuiverCompat;
 import schauweg.tillitbreaks.config.TIBConfig;
 import schauweg.tillitbreaks.config.TIBConfigManager;
 
+import java.util.Optional;
+
 @Mixin(DrawContext.class)
-public class DrawContextMixin {
+public abstract class DrawContextMixin {
 
     @Shadow @Final private MatrixStack matrices;
 
     @Shadow @Final private MinecraftClient client;
 
     @Shadow @Final private VertexConsumerProvider.Immediate vertexConsumers;
+
+    @Shadow public abstract int drawText(TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow);
 
     @Inject(method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At("TAIL"))
     public void onDrawItemInSlot(TextRenderer textRenderer, ItemStack stack, int x, int y, String countOverride, CallbackInfo ci) {
@@ -47,11 +54,9 @@ public class DrawContextMixin {
         float scale = config.getTextSize() / 100F * 0.5F;
 
         if (stack.isDamageable()) {
-            MatrixStack matrixTextInfo = new MatrixStack();
-            matrixTextInfo.push();
-            matrixTextInfo.multiplyPositionMatrix(matrices.peek().getPositionMatrix());
-            matrixTextInfo.translate(x, y, 300.0F);
-            matrixTextInfo.scale(scale, scale, 0F);
+            matrices.push();
+            matrices.translate(x, y, 300.0F);
+            matrices.scale(scale, scale, 0F);
             int fontHeight = client.textRenderer.fontHeight;
 
             if (config.isShowDurabilityNumber()) {
@@ -65,7 +70,7 @@ public class DrawContextMixin {
                         color = stack.getItemBarColor();
                     }
 
-                    client.textRenderer.draw(curDur, 16 / scale - textWidth + (scale * 0.33F), 16 / scale - fontHeight - barOffset + scale, color, false, matrixTextInfo.peek().getPositionMatrix(), vertexConsumers, TextRenderer.TextLayerType.SEE_THROUGH, 0, 0);
+                    drawText(textRenderer, Text.literal(curDur), (int)(16 / scale - textWidth + (scale * 0.33F)), (int)(16 / scale - fontHeight - barOffset + scale), color, false);
                 }
             }
 
@@ -75,6 +80,14 @@ public class DrawContextMixin {
                 int arrowCounter = 0;
                 int specialArrowCounter = 0;
                 boolean hasNormalArrows = false;
+                if (FabricLoader.getInstance().isModLoaded("nyfsquiver") && FabricLoader.getInstance().isModLoaded("accessories")) {
+                    Optional<Triple<Integer, Integer, Boolean>> quiverData = NyfsQuiverCompat.readQuiverInventory(player);
+                    if (quiverData.isPresent()) {
+                        arrowCounter += quiverData.get().getLeft();
+                        specialArrowCounter += quiverData.get().getMiddle();
+                        hasNormalArrows = quiverData.get().getRight();
+                    }
+                }
                 for (int i = 0; i < inventory.size(); i++) {
                     ItemStack is = inventory.getStack(i);
                     if (is.getItem() == Items.ARROW || is.getItem() == Items.SPECTRAL_ARROW || is.getItem() == Items.TIPPED_ARROW) {
@@ -112,9 +125,9 @@ public class DrawContextMixin {
                     }
                 }
                 int textWidth = client.textRenderer.getWidth(totalArrows);
-                client.textRenderer.draw(totalArrows, 16 / scale - textWidth + (scale * 0.33F), 0.5F / scale, -1, false, matrixTextInfo.peek().getPositionMatrix(), vertexConsumers, TextRenderer.TextLayerType.SEE_THROUGH, 0, 0);
+                drawText(textRenderer, Text.literal(totalArrows), (int)(16 / scale - textWidth + (scale * 0.33F)), (int)(0.5F / scale), -1, false);
             }
-            matrixTextInfo.push();
+            matrices.pop();
         }
     }
 }
