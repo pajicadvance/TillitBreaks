@@ -24,6 +24,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import schauweg.tillitbreaks.compat.AccessorifyCompat;
 import schauweg.tillitbreaks.compat.NyfsQuiverCompat;
 import schauweg.tillitbreaks.config.TIBConfig;
 import schauweg.tillitbreaks.config.TIBConfigManager;
@@ -80,12 +81,22 @@ public abstract class DrawContextMixin {
                 int arrowCounter = 0;
                 int specialArrowCounter = 0;
                 boolean hasNormalArrows = false;
-                if (FabricLoader.getInstance().isModLoaded("nyfsquiver") && FabricLoader.getInstance().isModLoaded("accessories")) {
-                    Optional<Triple<Integer, Integer, Boolean>> quiverData = NyfsQuiverCompat.readQuiverInventory(player);
-                    if (quiverData.isPresent()) {
-                        arrowCounter += quiverData.get().getLeft();
-                        specialArrowCounter += quiverData.get().getMiddle();
-                        hasNormalArrows = quiverData.get().getRight();
+                if (FabricLoader.getInstance().isModLoaded("accessories")) {
+                    if (FabricLoader.getInstance().isModLoaded("nyfsquiver")) {
+                        Optional<Triple<Integer, Integer, Boolean>> quiverData = NyfsQuiverCompat.readQuiverInventory(player);
+                        if (quiverData.isPresent()) {
+                            arrowCounter += quiverData.get().getLeft();
+                            specialArrowCounter += quiverData.get().getMiddle();
+                            hasNormalArrows = quiverData.get().getRight();
+                        }
+                    }
+                    if (FabricLoader.getInstance().isModLoaded("accessorify")) {
+                        Optional<Triple<Integer, Integer, Boolean>> arrowData = AccessorifyCompat.readArrowSlots(player);
+                        if (arrowData.isPresent()) {
+                            arrowCounter += arrowData.get().getLeft();
+                            specialArrowCounter += arrowData.get().getMiddle();
+                            hasNormalArrows = arrowData.get().getRight();
+                        }
                     }
                 }
                 for (int i = 0; i < inventory.size(); i++) {
