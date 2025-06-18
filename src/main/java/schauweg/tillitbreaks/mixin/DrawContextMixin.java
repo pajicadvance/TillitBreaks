@@ -71,7 +71,7 @@ public abstract class DrawContextMixin {
                         color = stack.getItemBarColor();
                     }
 
-                    drawText(textRenderer, Text.literal(curDur), (int)(16 / scale - textWidth + (scale * 0.33F)), (int)(16 / scale - fontHeight - barOffset + scale), color, false);
+                    drawText(textRenderer, Text.literal(curDur), (int)(16 / scale - textWidth + (scale * 0.33F)), (int)(16 / scale - fontHeight - barOffset + scale), color, config.isTextShadow());
                 }
             }
 
@@ -136,7 +136,7 @@ public abstract class DrawContextMixin {
                     }
                 }
                 int textWidth = client.textRenderer.getWidth(totalArrows);
-                drawText(textRenderer, Text.literal(totalArrows), (int)(16 / scale - textWidth + (scale * 0.33F)), (int)(0.5F / scale), -1, false);
+                drawText(textRenderer, Text.literal(totalArrows), (int)(16 / scale - textWidth + (scale * 0.33F)), (int)(0.5F / scale), -1, config.isTextShadow());
             }
             matrices.pop();
         }

@@ -69,6 +69,13 @@ public class TIBConfigScreen {
                 .build()
         );
 
+        general.addEntry(entryBuilder.startBooleanToggle(Text.translatable(Main.MOD_ID + ".config.option.textshadow"), config.isTextShadow())
+                .setSaveConsumer(newValue -> config.setTextShadow(newValue))
+                .setDefaultValue(true)
+                .setYesNoTextSupplier(getYesNoSupplier("tillitbreaks.config.enabled", "tillitbreaks.config.disabled"))
+                .build()
+        );
+
         general.addEntry(entryBuilder.startIntSlider(Text.translatable(Main.MOD_ID + ".config.option.textsize"), config.getTextSize(), 50, 130)
                 .setSaveConsumer(newValue -> config.setTextSize(newValue))
                 .setDefaultValue(100)
