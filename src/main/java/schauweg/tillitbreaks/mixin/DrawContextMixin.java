@@ -6,7 +6,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -17,14 +16,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
+import org.apache.commons.lang3.tuple.Triple;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import schauweg.tillitbreaks.compat.AccessorifyCompat;
 import schauweg.tillitbreaks.config.TIBConfig;
 import schauweg.tillitbreaks.config.TIBConfigManager;
+
+import java.util.Optional;
 
 @Mixin(DrawContext.class)
 public abstract class DrawContextMixin {
@@ -32,8 +35,6 @@ public abstract class DrawContextMixin {
     @Shadow @Final private MatrixStack matrices;
 
     @Shadow @Final private MinecraftClient client;
-
-    @Shadow @Final private VertexConsumerProvider.Immediate vertexConsumers;
 
     @Shadow public abstract int drawText(TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow);
 
@@ -66,7 +67,7 @@ public abstract class DrawContextMixin {
                         color = stack.getItemBarColor();
                     }
 
-                    drawText(textRenderer, Text.literal(curDur), (int)(16 / scale - textWidth + (scale * 0.33F)), (int)(16 / scale - fontHeight - barOffset + scale), color, false);
+                    drawText(textRenderer, Text.literal(curDur), (int)(16 / scale - textWidth + (scale * 0.33F)), (int)(16 / scale - fontHeight - barOffset + scale), color, config.isTextShadow());
                 }
             }
 
@@ -76,6 +77,16 @@ public abstract class DrawContextMixin {
                 int arrowCounter = 0;
                 int specialArrowCounter = 0;
                 boolean hasNormalArrows = false;
+                if (FabricLoader.getInstance().isModLoaded("accessories")) {
+                    if (FabricLoader.getInstance().isModLoaded("accessorify")) {
+                        Optional<Triple<Integer, Integer, Boolean>> arrowData = AccessorifyCompat.readArrowSlots(player);
+                        if (arrowData.isPresent()) {
+                            arrowCounter += arrowData.get().getLeft();
+                            specialArrowCounter += arrowData.get().getMiddle();
+                            hasNormalArrows = arrowData.get().getRight();
+                        }
+                    }
+                }
                 for (int i = 0; i < inventory.size(); i++) {
                     ItemStack is = inventory.getStack(i);
                     if (is.getItem() == Items.ARROW || is.getItem() == Items.SPECTRAL_ARROW || is.getItem() == Items.TIPPED_ARROW) {
@@ -113,7 +124,7 @@ public abstract class DrawContextMixin {
                     }
                 }
                 int textWidth = client.textRenderer.getWidth(totalArrows);
-                drawText(textRenderer, Text.literal(totalArrows), (int)(16 / scale - textWidth + (scale * 0.33F)), (int)(0.5F / scale), -1, false);
+                drawText(textRenderer, Text.literal(totalArrows), (int)(16 / scale - textWidth + (scale * 0.33F)), (int)(0.5F / scale), -1, config.isTextShadow());
             }
             matrices.pop();
         }

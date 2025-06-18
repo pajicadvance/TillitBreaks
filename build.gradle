@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.9-SNAPSHOT'
+    id 'fabric-loom' version '1.10-SNAPSHOT'
     id 'maven-publish'
 
     id "com.modrinth.minotaur" version "2.+"
@@ -25,6 +25,7 @@ repositories {
         name = 'TerraformersMC'
         url = 'https://maven.terraformersmc.com/releases'
     }
+    maven { url = "https://maven.wispforest.io/releases/" }
 }
 
 dependencies {
@@ -45,6 +46,8 @@ dependencies {
     modImplementation("com.terraformersmc:modmenu:${project.modmenu}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
+
+    modCompileOnly "io.wispforest:accessories-fabric:${project.accessories_version}"
 }
 
 processResources {
