@@ -6,7 +6,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerInventory;
@@ -16,7 +15,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.ColorHelper;
 import org.apache.commons.lang3.tuple.Triple;
+import org.joml.Matrix3x2fStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,11 +33,11 @@ import java.util.Optional;
 @Mixin(DrawContext.class)
 public abstract class DrawContextMixin {
 
-    @Shadow @Final private MatrixStack matrices;
-
     @Shadow @Final private MinecraftClient client;
 
-    @Shadow public abstract int drawText(TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow);
+    @Shadow public abstract void drawText(TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow);
+
+    @Shadow @Final private Matrix3x2fStack matrices;
 
     @Inject(method = "drawStackOverlay(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawStackCount(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V"))
     public void onDrawItemInSlot(TextRenderer textRenderer, ItemStack stack, int x, int y, String countOverride, CallbackInfo ci) {
@@ -51,9 +52,9 @@ public abstract class DrawContextMixin {
         float scale = config.getTextSize() / 100F * 0.5F;
 
         if (stack.isDamageable()) {
-            matrices.push();
-            matrices.translate(x, y, 300.0F);
-            matrices.scale(scale, scale, 0F);
+            matrices.pushMatrix();
+            matrices.translate(x, y);
+            matrices.scale(scale, scale);
             int fontHeight = client.textRenderer.fontHeight;
 
             if (config.isShowDurabilityNumber()) {
@@ -64,7 +65,7 @@ public abstract class DrawContextMixin {
 
                     int color = -1;
                     if (config.isColorDurabilityNumber() && !(config.isColorDurabilityNumWhiteIfFull() && !stack.isDamaged())) {
-                        color = stack.getItemBarColor();
+                        color = ColorHelper.fullAlpha(stack.getItemBarColor());
                     }
 
                     drawText(textRenderer, Text.literal(curDur), (int)(16 / scale - textWidth + (scale * 0.33F)), (int)(16 / scale - fontHeight - barOffset + scale), color, config.isTextShadow());
@@ -126,7 +127,7 @@ public abstract class DrawContextMixin {
                 int textWidth = client.textRenderer.getWidth(totalArrows);
                 drawText(textRenderer, Text.literal(totalArrows), (int)(16 / scale - textWidth + (scale * 0.33F)), (int)(0.5F / scale), -1, config.isTextShadow());
             }
-            matrices.pop();
+            matrices.popMatrix();
         }
     }
 }
