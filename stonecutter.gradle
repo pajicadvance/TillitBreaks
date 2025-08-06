@@ -1,0 +1,9 @@
+plugins {
+    id "dev.kikugie.stonecutter"
+}
+stonecutter.active "1.21.1"
+
+tasks.register("runActiveClient") {
+    group = "fabric"
+    dependsOn(":${stonecutter.current.project}:runClient")
+}

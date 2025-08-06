@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "tillitbreaks",
+  "version": "${version}",
+  "name": "Till It Breaks Updated",
+  "description": "Displays the durability of items on the item itself, updated for 1.21",
+  "authors": ["Schauweg", "pajic"],
+  "contact": {},
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "me.pajic.tib.TIB"
+    ],
+    "modmenu": [
+      "me.pajic.tib.config.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "tillitbreaks.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": ">=1.21 <=1.21.5",
+    "yet_another_config_lib_v3": "*"
+  }
+}

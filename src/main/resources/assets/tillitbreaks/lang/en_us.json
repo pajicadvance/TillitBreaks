@@ -1,0 +1,15 @@
+{
+  "tillitbreaks.config": "Till It Breaks Configuration",
+  "tillitbreaks.config.showDurabilityBar": "Show durability bar",
+  "tillitbreaks.config.showDurabilityNumber": "Show durability number",
+  "tillitbreaks.config.showDurabilityBarIfFull": "Show durability bar if undamaged",
+  "tillitbreaks.config.showDurabilityNumberIfFull": "Show durability number if undamaged",
+  "tillitbreaks.config.durabilityBarColorSaturation": "Durability bar color saturation",
+  "tillitbreaks.config.durabilityNumberColorSaturation": "Durability number color saturation",
+  "tillitbreaks.config.durabilityBarColorSaturation.desc": "Values less than 1 will make the color less vibrant. 0 will make the color white regardless of durability.",
+  "tillitbreaks.config.durabilityNumberColorSaturation.desc": "Values less than 1 will make the color less vibrant. 0 will make the color white regardless of durability.",
+  "tillitbreaks.config.showArrowCount": "Show arrow counter on ranged weapons",
+  "tillitbreaks.config.textShadow": "Text shadow",
+  "tillitbreaks.config.textScale": "Text scale",
+  "tillitbreaks.config.textScale.desc": "Text may look inconsistent at certain values."
+}
