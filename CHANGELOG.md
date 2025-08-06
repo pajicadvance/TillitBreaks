@@ -1,3 +1,4 @@
 - Switched config API to YetAnotherConfigLib. **Your configuration will be reset**.
 - Added options to control the color saturation of the durability bar and the durability number.
+- Arrow counter now counts arrows added by other mods, given the mod adds them to the `minecraft:arrows` tag.
 - Rewrote parts of the mod to bring it up to the standard of my other projects, mostly to make it easier for me to port the mod to newer versions and possibly NeoForge in the future.

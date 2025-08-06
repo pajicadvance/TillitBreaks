@@ -4,7 +4,7 @@ It also has some additional features:
 
 - New options for changing the color saturation of the durability bar and durability number.
 - New option for toggling text shadows on the durability number and arrow counter.
-- Improved arrow counter to display the amount of special arrows when the bow has Infinity.
+- Improved arrow counter to count arrows added by other mods and display the amount of special arrows when the bow has Infinity.
 - Improved text rendering and compatibility with mods like [ImmediatelyFast](https://modrinth.com/mod/immediatelyfast).
 - Support for [ReArm](https://modrinth.com/mod/rearm), [Bow Infinity Fix](https://modrinth.com/mod/bow-infinity-fix) and [Infinities](https://modrinth.com/mod/infinities): Arrow counter will show infinity instead of 0 if either mod is installed and the bow has Infinity.
 - Support for [Accessorify](https://modrinth.com/mod/accessorify): Arrow counter will also account for arrows equipped in the arrow accessory slots.
