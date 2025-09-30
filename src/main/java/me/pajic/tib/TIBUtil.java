@@ -24,7 +24,7 @@ public class TIBUtil {
             ItemStack is = container.getItem(i);
             //? if 1.21.1
             if (BuiltInRegistries.ITEM.getTag(ItemTags.ARROWS).orElseThrow().contains(is.getItemHolder())) {
-            //? if 1.21.8
+            //? if >= 1.21.8
             /*if (BuiltInRegistries.ITEM.getOrThrow(ItemTags.ARROWS).contains(is.getItemHolder())) {*/
                 arrows.setLeft(arrows.getLeft() + is.getCount());
                 if (is.getItem() == Items.ARROW) arrows.setRight(true);
