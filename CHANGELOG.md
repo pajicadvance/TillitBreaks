@@ -1,1 +1,1 @@
-- Updated to Minecraft 1.21.9.
+- Re-enabled Accessories compat for 1.21.8+.

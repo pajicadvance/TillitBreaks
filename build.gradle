@@ -40,7 +40,11 @@ dependencies {
     modImplementation "com.terraformersmc:modmenu:${property("modmenu_version")}"
     modImplementation "dev.isxander:yet-another-config-lib:${property("yacl_version")}"
     modCompileOnly "maven.modrinth:nyfs-quivers:${property("nyfsquiver_version")}"
-    if (stonecutter.eval(stonecutter.current.version, "<=1.21.4")) {
+    modCompileOnly "maven.modrinth:accessorify:${property("accessorify_version")}"
+    modCompileOnly "me.fzzyhmstrs:fzzy_config:${property("fzzy_version")}"
+    modCompileOnly "io.wispforest:accessories-fabric:${property("accessories_version")}"
+    modCompileOnly "io.wispforest:owo-lib:${property("owo_version")}"
+    if (stonecutter.eval(stonecutter.current.version, "<=1.21.8")) {
         modImplementation "maven.modrinth:accessorify:${property("accessorify_version")}"
         modImplementation "me.fzzyhmstrs:fzzy_config:${property("fzzy_version")}"
         modImplementation "io.wispforest:accessories-fabric:${property("accessories_version")}"
