@@ -23,7 +23,6 @@ platform {
 }
 
 stonecutter {
-	filters.exclude("**/*.accesswidener", "**/*.cfg")
 	val dir = eval(current.version, ">1.21.10")
 	replacements.string {
 		direction = dir
@@ -43,8 +42,6 @@ fletchingTable {
 
 neoForge {
 	version = property("deps.neoforge") as String
-	accessTransformers.from(rootProject.file("src/main/resources/aw/${stonecutter.current.version}.cfg"))
-	validateAccessTransformers = true
 
 	if (hasProperty("deps.parchment")) parchment {
 		val (mc, ver) = (property("deps.parchment") as String).split(':')
@@ -77,6 +74,8 @@ repositories {
 	maven("https://maven.parchmentmc.org") { name = "ParchmentMC" }
 	maven("https://maven.fzzyhmstrs.me/") { name = "Fzzy Config" }
 	maven("https://thedarkcolour.github.io/KotlinForForge/") { name = "KotlinForForge" }
+	maven("https://maven.wispforest.io/releases/") { name = "Wisp Forest" }
+	maven("https://maven.su5ed.dev/releases") { name = "Su5ed" }
 	maven("https://jitpack.io") { name = "Jitpack" }
 	exclusiveContent {
 		forRepository { maven("https://api.modrinth.com/maven") { name = "Modrinth" } }
@@ -86,10 +85,9 @@ repositories {
 
 dependencies {
 	implementation( "me.fzzyhmstrs:fzzy_config:${prop("deps.fzzy_config")}+neoforge")
-	implementation("com.moulberry:mixinconstraints:${prop("deps.mixinconstraints")}")
-	jarJar("com.moulberry:mixinconstraints:${prop("deps.mixinconstraints")}")
-	implementation("com.github.ramixin:mixson-neoforge:${prop("deps.mixson")}")
-	jarJar("com.github.ramixin:mixson-neoforge:${prop("deps.mixson")}")
+
+	compileOnly("io.wispforest:accessories-neoforge:${prop("deps.accessories")}")
+	compileOnly("io.wispforest:owo-lib-neoforge:${prop("deps.owo")}")
 }
 
 tasks.named("createMinecraftArtifacts") {

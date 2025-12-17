@@ -1,0 +1,2 @@
+- Updated to Minecraft 1.21.11.
+- Switched config API to Fzzy Config.
