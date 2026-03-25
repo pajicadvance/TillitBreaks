@@ -1,8 +1,8 @@
-package me.pajic.modid.platform.neoforge;
+package me.pajic.tillitbreaks.platform.neoforge;
 
 //? neoforge {
 
-/*import me.pajic.modid.platform.Platform;
+/*import me.pajic.tillitbreaks.platform.Platform;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 

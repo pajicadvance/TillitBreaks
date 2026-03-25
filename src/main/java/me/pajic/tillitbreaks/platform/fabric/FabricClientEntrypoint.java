@@ -1,8 +1,8 @@
-package me.pajic.modid.platform.fabric;
+package me.pajic.tillitbreaks.platform.fabric;
 
 //? fabric {
 
-import me.pajic.modid.ModTemplate;
+import me.pajic.tillitbreaks.TIB;
 import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import net.fabricmc.api.ClientModInitializer;
 
@@ -11,7 +11,7 @@ public class FabricClientEntrypoint implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		ModTemplate.onInitializeClient();
+		TIB.onInitializeClient();
 	}
 }
 //?}

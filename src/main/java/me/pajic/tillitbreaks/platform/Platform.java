@@ -1,4 +1,4 @@
-package me.pajic.modid.platform;
+package me.pajic.tillitbreaks.platform;
 
 public interface Platform {
 
