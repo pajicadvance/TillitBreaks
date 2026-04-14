@@ -8,4 +8,5 @@ public class CompatFlags {
 			TIB.xplat().isModLoaded("bowinfinityfix") ||
 			TIB.xplat().isModLoaded("infinities") ||
 			TIB.xplat().isModLoaded("rearm");
+	public static final boolean TOOL_POUCH_LOADED = TIB.xplat().isModLoaded("toolpouch");
 }

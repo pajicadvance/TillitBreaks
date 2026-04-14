@@ -2,6 +2,7 @@ package me.pajic.tillitbreaks.renderer;
 
 import me.pajic.tillitbreaks.TIB;
 import me.pajic.tillitbreaks.compat.CompatFlags;
+import me.pajic.tillitbreaks.compat.ToolPouchCompat;
 import me.pajic.tillitbreaks.util.TIBUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -64,6 +65,7 @@ public class ItemTextRenderer {
         MutableTriple<Integer, Integer, Boolean> arrows = MutableTriple.of(0, 0, false);
 
         TIBUtil.addArrowsFromContainer(inventory, arrows);
+		if (CompatFlags.TOOL_POUCH_LOADED) ToolPouchCompat.addArrowsFromToolPouch(minecraft.player, arrows);
 
         int arrowCounter = arrows.getLeft();
         int specialArrowCounter = arrows.getMiddle();

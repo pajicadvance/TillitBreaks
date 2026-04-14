@@ -52,6 +52,7 @@ repositories {
 
 dependencies {
 	implementation("me.fzzyhmstrs:fzzy_config:${prop("deps.fzzy_config")}+neoforge")
+	compileOnly("maven.modrinth:tool-pouch:${prop("deps.tool_pouch")}-neoforge")
 }
 
 tasks.named("createMinecraftArtifacts") {

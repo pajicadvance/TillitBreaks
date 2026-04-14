@@ -1,1 +1,1 @@
-- Relaxed MC version requirement so that I don't have to upload a new file every time MC gets a hotfix. No functional changes to the mod.
+- Added compatibility for Tool Pouch. Arrows from equipped tool pouches will now show on the arrow counter.

@@ -11,6 +11,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.apache.commons.lang3.tuple.MutableTriple;
 
+import java.util.List;
+
 public class TIBUtil {
 
     public static boolean shouldRenderText(LocalPlayer player, ItemStack stack) {
@@ -20,15 +22,20 @@ public class TIBUtil {
     }
 
     public static void addArrowsFromContainer(Container container, MutableTriple<Integer, Integer, Boolean> arrows) {
-        for (int i = 0; i < container.getContainerSize(); i++) {
-            ItemStack stack = container.getItem(i);
-            if (stack.is(ItemTags.ARROWS)) {
-                arrows.setLeft(arrows.getLeft() + stack.getCount());
-                if (stack.getItem() == Items.ARROW) arrows.setRight(true);
-                else arrows.setMiddle(arrows.getMiddle() + stack.getCount());
-            }
-        }
+		container.forEach(stack -> addArrowStack(stack, arrows));
     }
+
+	public static void addArrowsFromItemList(List<ItemStack> list, MutableTriple<Integer, Integer, Boolean> arrows) {
+		list.forEach(stack -> addArrowStack(stack, arrows));
+	}
+
+	private static void addArrowStack(ItemStack stack, MutableTriple<Integer, Integer, Boolean> arrows) {
+		if (stack.is(ItemTags.ARROWS)) {
+			arrows.setLeft(arrows.getLeft() + stack.getCount());
+			if (stack.getItem() == Items.ARROW) arrows.setRight(true);
+			else arrows.setMiddle(arrows.getMiddle() + stack.getCount());
+		}
+	}
 
     @SuppressWarnings("resource")
 	public static boolean hasInfinity(LocalPlayer player, ItemStack stack) {
