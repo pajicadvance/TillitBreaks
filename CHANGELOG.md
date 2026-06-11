@@ -1,1 +1,1 @@
-- Added compatibility for Tool Pouch. Arrows from equipped tool pouches will now show on the arrow counter.
+- Update to be compatible with the latest version of Tool Pouch.
