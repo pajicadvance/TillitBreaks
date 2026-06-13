@@ -1,1 +1,2 @@
-- Update to be compatible with the latest version of Tool Pouch.
+- Arrow counter display is now shortened if more than 999 arrows are present to prevent text overlapping into other hotbar/inventory slots (for example 1000 → 1K, 1000000 → 1M).
+- Durability number is also shortened if it's larger than 9999 - nothing in vanilla has this kind of durability, but it might be useful for modded items.

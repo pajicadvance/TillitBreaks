@@ -25,7 +25,7 @@ public abstract class GuiGraphicsExtractorMixin {
             method = "itemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
             at = @At("TAIL")
     )
-    private void onRenderItemDecorations(Font font, ItemStack stack, int x, int y, String text, CallbackInfo ci) {
-        ItemTextRenderer.render((GuiGraphicsExtractor) (Object) this, minecraft, pose, font, stack, x, y);
+    private void onRenderItemDecorations(Font font, ItemStack itemStack, int x, int y, String countText, CallbackInfo ci) {
+        ItemTextRenderer.render((GuiGraphicsExtractor) (Object) this, minecraft, pose, font, itemStack, x, y);
     }
 }

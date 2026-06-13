@@ -42,7 +42,8 @@ public class ItemTextRenderer {
     }
 
     private static void renderDurability(GuiGraphicsExtractor guiGraphics, Font font, float scale, ItemStack stack) {
-        String durability = String.valueOf(stack.getMaxDamage() - stack.getDamageValue());
+		int d = stack.getMaxDamage() - stack.getDamageValue();
+        String durability = TIB.CONFIG.shortenDurability.get() && d > 9999 ? TIB.FORMATTER.format(d) : String.valueOf(d);
         float offset = TIB.CONFIG.showDurabilityBar.get() ? 2.5F / scale : 0;
         int i = stack.getMaxDamage();
         float f = Math.max(0.0F, ((float) i - stack.getDamageValue()) / i);
@@ -70,17 +71,18 @@ public class ItemTextRenderer {
         int arrowCounter = arrows.getLeft();
         int specialArrowCounter = arrows.getMiddle();
         boolean hasNormalArrows = arrows.getRight();
-        String totalArrows = String.valueOf(arrowCounter);
+        String totalArrows = TIB.CONFIG.shortenArrowCount.get() && arrowCounter > 999 ? TIB.FORMATTER.format(arrowCounter) : String.valueOf(arrowCounter);
 
         if (TIBUtil.hasInfinity(minecraft.player, stack)) {
+			String specialArrows = TIB.CONFIG.shortenArrowCount.get() && specialArrowCounter > 999 ? TIB.FORMATTER.format(specialArrowCounter) : String.valueOf(specialArrowCounter);
             if (CompatFlags.INFINITY_FIX_PRESENT) {
                 if (arrowCounter == 0) totalArrows = "∞";
                 else if (arrowCounter > 0) {
-                    if (specialArrowCounter > 0) totalArrows = "∞+" + specialArrowCounter;
+                    if (specialArrowCounter > 0) totalArrows = "∞+" + specialArrows;
                     else totalArrows = "∞";
                 }
             } else if (arrowCounter > 0 && hasNormalArrows) {
-                if (specialArrowCounter > 0) totalArrows = "∞+" + specialArrowCounter;
+                if (specialArrowCounter > 0) totalArrows = "∞+" + specialArrows;
                 else totalArrows = "∞";
             }
         }
