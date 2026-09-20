@@ -1,33 +1,33 @@
-# Multicutter
+## This is an update of [Till It Breaks](https://modrinth.com/mod/till-it-breaks) for Minecraft 1.21 and above.
 
-Based on [Stonecutter Fabric & NeoForge template](https://github.com/stonecutter-versioning/stonecutter-template-multiloader)
+It also has some additional features:
 
-- Multiloader and multiversion management with helper classes
-- Supports both obfuscated and unobfuscated game versions
-- Dependency handling using Stonecutter versioned properties
-- Versioned class tweakers and access transformers
-- Automatic Mixin and entrypoint registration
-- Automated Modrinth and CurseForge publishing
+- New options for changing the color saturation of the durability bar and durability number.
+- New option for toggling text shadows on the durability number and arrow counter.
+- Improved arrow counter to count arrows added by other mods and display the amount of special arrows when the bow has Infinity.
+- Improved text rendering and compatibility with mods like [ImmediatelyFast](https://modrinth.com/mod/immediatelyfast).
+- Support for [ReArm](https://modrinth.com/mod/rearm), [Bow Infinity Fix](https://modrinth.com/mod/bow-infinity-fix) and [Infinities](https://modrinth.com/mod/infinities): Arrow counter will show infinity instead of 0 if either mod is installed and the bow has Infinity.
+- Support for [Tool Pouch](https://modrinth.com/mod/tool-pouch): Arrow counter will also account for arrows equipped in the arrow accessory slots.
 
-### Pre-configured content
+## Original mod description:
 
-- Versions:
-    - 1.21.1 Fabric and NeoForge
-    - 26.1.2 Fabric and NeoForge
-    - 26.2 Fabric and NeoForge
-- Dependencies:
-    - Fabric API (required)
-    - Fzzy Config (required)
-    - Mixson (required)
-    - MixinConstraints (JiJ-d)
-    - Sodium (runtime)
+<details>
+<summary>Spoiler</summary>
 
-No instructions on how to use this yet. If you do want to try it out, the only big difference compared to other templates is that dependencies are declared inside `stonecutter.properties.toml` and not manually inside the build scripts. You only need to add repositories to the build scripts. You can see how pre-configured dependencies are added as examples.
+This mod displays the durability that is left of items on the items itself. By using this mod you'll always know when your tool is about to break.
 
-Tooling used:
-- [Fabric Loom](https://github.com/FabricMC/fabric-loom): Used for the Fabric build script
-- [ModDevGradle](https://github.com/neoforged/ModDevGradle): Used for the NeoForge build script
-- [Stonecutter](https://stonecutter.kikugie.dev/): Multiloader and multiversion handling
-- [Loom Backwards Compatibility](https://codeberg.org/KikuGie/loom-back-compat): Allows the Fabric build script to handle both obfuscated and unobfuscated versions of the game
-- [Fletching Table](https://stonecutter.kikugie.dev/wiki/fletching-table/#fletching-table-overview): Handles automatic mixin and entrypoint registration
-- [Mod Publish Plugin](https://github.com/modmuss50/mod-publish-plugin): Handles automated publishing to Modrinth and CurseForge
+![image](https://cdn.modrinth.com/data/cached_images/5c7ddaeb06832e81be53199ada0f7eade0e13bd7.png)
+
+A nice little feature is also the functionality of displaying your current arrow amount on the bow and crossbow item.
+
+Follow options are customizable:
+
+- to always enable the durability bar (so it shows when the item is completely undamaged)
+- Show the durability number when the item is not damaged like (disabled means it mimics the vanilla damaged bar)
+- Completely disable the damage bar
+- Completely disable the damage number
+- Color the damage number depending on the damage on the item
+- Enable or disable the arrow counter
+- Resize the text a bit
+
+</details>

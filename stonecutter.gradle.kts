@@ -39,6 +39,9 @@ stonecutter parameters {
             replace("ValidatedIdentifier", "ValidatedIdentifier")
             replace("ResourceLocation", "Identifier")
             replace("net.ramixin.mixson_backport", "net.ramixin.mixson")
+            replace("GuiGraphicsExtractorMixin", "GuiGraphicsExtractorMixin")
+            replace("GuiGraphics", "GuiGraphicsExtractor")
+            replace("guiGraphics.drawString", "guiGraphics.text")
         }
     }
 }
